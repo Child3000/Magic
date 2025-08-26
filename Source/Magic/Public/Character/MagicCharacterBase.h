@@ -15,5 +15,9 @@ public:
 	AMagicCharacterBase();
 
 protected:
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Weapon")
+	TObjectPtr<USkeletalMeshComponent> Weapon;
+
+protected:
 	virtual void BeginPlay() override;
 };

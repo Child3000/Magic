@@ -1,7 +1,7 @@
 // Copyright Bear Child
 
 
-#include "MagicMonster.h"
+#include "Character/MagicMonster.h"
 
 
 // Sets default values
