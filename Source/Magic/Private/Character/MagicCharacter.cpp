@@ -3,30 +3,32 @@
 
 #include "Character/MagicCharacter.h"
 
+#include "Camera/CameraComponent.h"
+#include "GameFramework/CharacterMovementComponent.h"
+#include "GameFramework/SpringArmComponent.h"
 
-// Sets default values
 AMagicCharacter::AMagicCharacter()
 {
-	// Set this character to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
-	PrimaryActorTick.bCanEverTick = true;
-}
-
-// Called when the game starts or when spawned
-void AMagicCharacter::BeginPlay()
-{
-	Super::BeginPlay();
+	bUseControllerRotationPitch = false;
+	bUseControllerRotationYaw = false;
+	bUseControllerRotationRoll = false;
 	
-}
+	SpringArmComp = CreateDefaultSubobject<USpringArmComponent>("SpringArm");
+	SpringArmComp->SetupAttachment(RootComponent);
+	SpringArmComp->TargetArmLength = 650;
+	SpringArmComp->SetRelativeRotation(FRotator(-45, 0, 0));
+	SpringArmComp->bUsePawnControlRotation = false;
+	// fixed camera regardless of character rotation.
+	SpringArmComp->bInheritPitch = false;
+	SpringArmComp->bInheritYaw = false;
+	SpringArmComp->bInheritRoll = false;
+	
+	CameraComp = CreateDefaultSubobject<UCameraComponent>("Camera");
+	CameraComp->SetupAttachment(SpringArmComp);
+	CameraComp->bUsePawnControlRotation = false;
 
-// Called every frame
-void AMagicCharacter::Tick(float DeltaTime)
-{
-	Super::Tick(DeltaTime);
+	GetCharacterMovement()->bOrientRotationToMovement = true;
+	GetCharacterMovement()->RotationRate = FRotator(0, 720, 0);
+	GetCharacterMovement()->bConstrainToPlane = true;
+	GetCharacterMovement()->bSnapToPlaneAtStart = true;
 }
-
-// Called to bind functionality to input
-void AMagicCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
-{
-	Super::SetupPlayerInputComponent(PlayerInputComponent);
-}
-
