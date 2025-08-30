@@ -7,6 +7,7 @@
 #include "Interaction/MagicInteractGuide.h"
 #include "MagicPlayerController.generated.h"
 
+class AMagicProjectileBase;
 struct FInputActionValue;
 class UInputAction;
 class UInputMappingContext;
@@ -30,16 +31,22 @@ protected:
 	
 private:
 	#pragma region [INPUT]
+	
 	UPROPERTY(EditDefaultsOnly, Category="Input")	
 	TObjectPtr<UInputMappingContext> MagicContext;
 
 	UPROPERTY(EditDefaultsOnly, Category="Input")
 	TObjectPtr<UInputAction> MoveAction;
 
+	UPROPERTY(EditDefaultsOnly, Category="Input")
+	TObjectPtr<UInputAction> FireAction;
+	
 	void InputMove(const FInputActionValue& Value);
+	
+	void InputFire(const FInputActionValue& Value);
 
 	#pragma endregion
-
+	
 	#pragma region [HIGHLIGHT]
 
 	// track the actor that is currently pointing at.

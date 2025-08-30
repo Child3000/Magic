@@ -6,6 +6,7 @@
 #include "Camera/CameraComponent.h"
 #include "GameFramework/CharacterMovementComponent.h"
 #include "GameFramework/SpringArmComponent.h"
+#include "Projectile/MagicProjectileBase.h"
 
 AMagicCharacter::AMagicCharacter()
 {
@@ -31,4 +32,19 @@ AMagicCharacter::AMagicCharacter()
 	GetCharacterMovement()->RotationRate = FRotator(0, 720, 0);
 	GetCharacterMovement()->bConstrainToPlane = true;
 	GetCharacterMovement()->bSnapToPlaneAtStart = true;
+
+	WeaponProjectileSpawnSocketName = FName("Socket_ProjectileSpawn");
+}
+
+void AMagicCharacter::FireProjectile()
+{
+	FVector SpawnLocation = Weapon->GetSocketLocation(WeaponProjectileSpawnSocketName);
+	FRotator SpawnRotation = GetActorRotation();
+	
+	FActorSpawnParameters SpawnParams;
+	SpawnParams.Instigator = this;
+	SpawnParams.Owner = this;
+	SpawnParams.SpawnCollisionHandlingOverride = ESpawnActorCollisionHandlingMethod::AlwaysSpawn;
+	
+	GetWorld()->SpawnActor(ProjectileClass, &SpawnLocation, &SpawnRotation, SpawnParams);
 }

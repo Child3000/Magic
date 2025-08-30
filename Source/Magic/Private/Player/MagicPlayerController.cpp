@@ -5,6 +5,8 @@
 
 #include "EnhancedInputComponent.h"
 #include "EnhancedInputSubsystems.h"
+#include "Character/MagicCharacter.h"
+#include "Kismet/GameplayStatics.h"
 
 AMagicPlayerController::AMagicPlayerController()
 {
@@ -35,6 +37,7 @@ void AMagicPlayerController::SetupInputComponent()
 
 	auto* EnhancedInput = CastChecked<UEnhancedInputComponent>(InputComponent);
 	EnhancedInput->BindAction(MoveAction, ETriggerEvent::Triggered, this, &AMagicPlayerController::InputMove);
+	EnhancedInput->BindAction(FireAction, ETriggerEvent::Started, this, &AMagicPlayerController::InputFire);
 }
 
 void AMagicPlayerController::PlayerTick(float DeltaTime)
@@ -89,4 +92,15 @@ void AMagicPlayerController::InputMove(const FInputActionValue& Value)
 		ControlledPawn->AddMovementInput(ForwardDir, InputAxis.X);
 		ControlledPawn->AddMovementInput(RightDir, InputAxis.Y);
 	}	
+}
+
+void AMagicPlayerController::InputFire(const FInputActionValue& Value)
+{
+	if (APawn* ControlledPawn = GetPawn())
+	{
+		if (auto* MagicCharacter = CastChecked<AMagicCharacter>(ControlledPawn))
+		{
+			MagicCharacter->FireProjectile();
+		}
+	}
 }

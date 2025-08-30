@@ -18,6 +18,8 @@ protected:
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Weapon")
 	TObjectPtr<USkeletalMeshComponent> Weapon;
 
+	static const FName WeaponHandSocketName;
+	
 protected:
 	virtual void BeginPlay() override;
 };
