@@ -37,6 +37,45 @@ void AMagicPlayerController::SetupInputComponent()
 	enhancedInput->BindAction(MoveAction, ETriggerEvent::Triggered, this, &AMagicPlayerController::OnInputMove);
 }
 
+void AMagicPlayerController::PlayerTick(float DeltaTime)
+{
+	Super::PlayerTick(DeltaTime);
+	CursorTrace();
+}
+
+void AMagicPlayerController::CursorTrace()
+{
+	FHitResult hitResult;
+	ETraceTypeQuery traceType = UEngineTypes::ConvertToTraceType(ECC_Visibility);
+	GetHitResultUnderCursorByChannel(traceType, false, hitResult);
+
+	const bool bHit = hitResult.bBlockingHit;
+	if (bHit &&
+		hitResult.GetActor() &&
+		Cast<IMagicInteractGuide>(hitResult.GetActor()))
+	{
+		if (_currentInteractGuide != hitResult.GetActor())
+		{
+			// hide previous guide if any.
+			if (IsValid(_currentInteractGuide.GetObject()))
+				_currentInteractGuide->OnHideInteractGuide();
+			
+			// show current guide.
+			_currentInteractGuide = hitResult.GetActor();
+			_currentInteractGuide->OnShowInteractGuide();
+		}
+	}
+	else
+	{
+		// hide guide.
+		if (IsValid(_currentInteractGuide.GetObject()))
+		{
+			_currentInteractGuide->OnHideInteractGuide();
+			_currentInteractGuide = nullptr;
+		}
+	}
+}
+
 void AMagicPlayerController::OnInputMove(const FInputActionValue& Value)
 {
 	const FVector2D moveInputAxis = Value.Get<FVector2D>();

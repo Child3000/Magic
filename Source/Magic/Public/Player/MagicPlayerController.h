@@ -4,6 +4,7 @@
 
 #include "CoreMinimal.h"
 #include "GameFramework/PlayerController.h"
+#include "Interaction/MagicInteractGuide.h"
 #include "MagicPlayerController.generated.h"
 
 struct FInputActionValue;
@@ -24,8 +25,11 @@ protected:
 	virtual void BeginPlay() override;
 
 	virtual void SetupInputComponent() override;
+
+	virtual void PlayerTick(float DeltaTime) override;
 	
 private:
+	#pragma region [INPUT]
 	UPROPERTY(EditDefaultsOnly, Category="Input")	
 	TObjectPtr<UInputMappingContext> MagicContext;
 
@@ -33,4 +37,16 @@ private:
 	TObjectPtr<UInputAction> MoveAction;
 
 	void OnInputMove(const FInputActionValue& Value);
+
+	#pragma endregion
+
+	#pragma region [HIGHLIGHT]
+
+	// track the actor that is currently pointing at.
+	TScriptInterface<IMagicInteractGuide> _currentInteractGuide = nullptr;
+
+	// called per frame from PlayerTick, which runs on locally-controlled player side only.
+	void CursorTrace();
+
+	#pragma endregion
 };

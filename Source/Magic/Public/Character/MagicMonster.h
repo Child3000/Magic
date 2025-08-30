@@ -4,25 +4,27 @@
 
 #include "CoreMinimal.h"
 #include "Character/MagicCharacterBase.h"
+#include "Interaction/MagicInteractGuide.h"
 #include "MagicMonster.generated.h"
 
 UCLASS()
-class MAGIC_API AMagicMonster : public AMagicCharacterBase
+class MAGIC_API AMagicMonster : public AMagicCharacterBase, public IMagicInteractGuide
 {
 	GENERATED_BODY()
 
 public:
-	// Sets default values for this character's properties
 	AMagicMonster();
+private:
+	#pragma region [INTERACT GUIDE]
 
-protected:
-	// Called when the game starts or when spawned
-	virtual void BeginPlay() override;
+	UPROPERTY(EditAnywhere, Category="Interact Guide")
+	TObjectPtr<UMaterialInterface> InteractGuideOverlayMat;
 
-public:
-	// Called every frame
-	virtual void Tick(float DeltaTime) override;
+	virtual void OnShowInteractGuide() override;
 
-	// Called to bind functionality to input
-	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
+	virtual void OnHideInteractGuide() override;
+	
+	void ApplyOverlayMaterials(UMaterialInterface* material) const;
+	
+	#pragma endregion
 };

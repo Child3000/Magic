@@ -3,30 +3,37 @@
 
 #include "Character/MagicMonster.h"
 
+#include "Components/CapsuleComponent.h"
 
-// Sets default values
+
 AMagicMonster::AMagicMonster()
 {
-	// Set this character to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
-	PrimaryActorTick.bCanEverTick = true;
+	PrimaryActorTick.bCanEverTick = false;
+	GetCapsuleComponent()->SetCollisionProfileName("Monster");
+	GetMesh()->SetCollisionProfileName("NoCollision");
 }
 
-// Called when the game starts or when spawned
-void AMagicMonster::BeginPlay()
+void AMagicMonster::OnShowInteractGuide()
 {
-	Super::BeginPlay();
-	
+	// UE_LOGFMT(LogMagicMonster, Log, "Show Interact Guide {0}", GetName());
+	if (InteractGuideOverlayMat)
+	{
+		ApplyOverlayMaterials(InteractGuideOverlayMat);
+	}
 }
 
-// Called every frame
-void AMagicMonster::Tick(float DeltaTime)
+void AMagicMonster::OnHideInteractGuide()
 {
-	Super::Tick(DeltaTime);
+	// UE_LOGFMT(LogMagicMonster, Log, "Hide Interact Guide {0}", GetName());
+	if (InteractGuideOverlayMat)
+	{
+		ApplyOverlayMaterials(nullptr);
+	}
 }
 
-// Called to bind functionality to input
-void AMagicMonster::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
+void AMagicMonster::ApplyOverlayMaterials(UMaterialInterface* material) const
 {
-	Super::SetupPlayerInputComponent(PlayerInputComponent);
+	GetMesh()->SetOverlayMaterial(material);
+	Weapon->SetOverlayMaterial(material);
 }
 
