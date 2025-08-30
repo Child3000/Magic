@@ -16,25 +16,25 @@ void AMagicPlayerController::BeginPlay()
 	Super::BeginPlay();
 	check(MagicContext);
 
-	UEnhancedInputLocalPlayerSubsystem* subsystem = ULocalPlayer::GetSubsystem<UEnhancedInputLocalPlayerSubsystem>(GetLocalPlayer());
-	check(subsystem);
-	subsystem->AddMappingContext(MagicContext, 0);
+	UEnhancedInputLocalPlayerSubsystem* Subsystem = ULocalPlayer::GetSubsystem<UEnhancedInputLocalPlayerSubsystem>(GetLocalPlayer());
+	check(Subsystem);
+	Subsystem->AddMappingContext(MagicContext, 0);
 
 	bShowMouseCursor = true;
 	DefaultMouseCursor = EMouseCursor::Type::Default;
 	
-	FInputModeGameAndUI inputMode;
-	inputMode.SetLockMouseToViewportBehavior(EMouseLockMode::DoNotLock);
-	inputMode.SetHideCursorDuringCapture(false);
-	SetInputMode(inputMode);
+	FInputModeGameAndUI InputMode;
+	InputMode.SetLockMouseToViewportBehavior(EMouseLockMode::DoNotLock);
+	InputMode.SetHideCursorDuringCapture(false);
+	SetInputMode(InputMode);
 }
 
 void AMagicPlayerController::SetupInputComponent()
 {
 	Super::SetupInputComponent();
 
-	auto* enhancedInput = CastChecked<UEnhancedInputComponent>(InputComponent);
-	enhancedInput->BindAction(MoveAction, ETriggerEvent::Triggered, this, &AMagicPlayerController::OnInputMove);
+	auto* EnhancedInput = CastChecked<UEnhancedInputComponent>(InputComponent);
+	EnhancedInput->BindAction(MoveAction, ETriggerEvent::Triggered, this, &AMagicPlayerController::InputMove);
 }
 
 void AMagicPlayerController::PlayerTick(float DeltaTime)
@@ -45,49 +45,48 @@ void AMagicPlayerController::PlayerTick(float DeltaTime)
 
 void AMagicPlayerController::CursorTrace()
 {
-	FHitResult hitResult;
-	ETraceTypeQuery traceType = UEngineTypes::ConvertToTraceType(ECC_Visibility);
-	GetHitResultUnderCursorByChannel(traceType, false, hitResult);
+	FHitResult HitResult;
+	ETraceTypeQuery TraceType = UEngineTypes::ConvertToTraceType(ECC_Visibility);
+	GetHitResultUnderCursorByChannel(TraceType, false, HitResult);
 
-	const bool bHit = hitResult.bBlockingHit;
-	if (bHit &&
-		hitResult.GetActor() &&
-		Cast<IMagicInteractGuide>(hitResult.GetActor()))
+	const bool bHit = HitResult.bBlockingHit;
+	if (bHit && HitResult.GetActor() &&
+		Cast<IMagicInteractGuide>(HitResult.GetActor()))
 	{
-		if (_currentInteractGuide != hitResult.GetActor())
+		if (CurrentGuide != HitResult.GetActor())
 		{
 			// hide previous guide if any.
-			if (IsValid(_currentInteractGuide.GetObject()))
-				_currentInteractGuide->OnHideInteractGuide();
+			if (IsValid(CurrentGuide.GetObject()))
+				CurrentGuide->OnHideInteractGuide();
 			
 			// show current guide.
-			_currentInteractGuide = hitResult.GetActor();
-			_currentInteractGuide->OnShowInteractGuide();
+			CurrentGuide = HitResult.GetActor();
+			CurrentGuide->OnShowInteractGuide();
 		}
 	}
 	else
 	{
 		// hide guide.
-		if (IsValid(_currentInteractGuide.GetObject()))
+		if (IsValid(CurrentGuide.GetObject()))
 		{
-			_currentInteractGuide->OnHideInteractGuide();
-			_currentInteractGuide = nullptr;
+			CurrentGuide->OnHideInteractGuide();
+			CurrentGuide = nullptr;
 		}
 	}
 }
 
-void AMagicPlayerController::OnInputMove(const FInputActionValue& Value)
+void AMagicPlayerController::InputMove(const FInputActionValue& Value)
 {
-	const FVector2D moveInputAxis = Value.Get<FVector2D>();
-	const FRotator controlRotation = GetControlRotation();
-	const FRotator controlYawRotation = FRotator(0, controlRotation.Yaw, 0);
+	const FVector2D InputAxis = Value.Get<FVector2D>();
+	const FRotator Rotation = GetControlRotation();
+	const FRotator YawRotation = FRotator(0, Rotation.Yaw, 0);
 
-	const FVector forwardDirection = controlYawRotation.Vector();
-	const FVector rightDirection = controlYawRotation.RotateVector(FVector::RightVector);
+	const FVector ForwardDir = YawRotation.Vector();
+	const FVector RightDir = YawRotation.RotateVector(FVector::RightVector);
 
-	if (APawn* pawnControlled = GetPawn())
+	if (APawn* ControlledPawn = GetPawn())
 	{
-		pawnControlled->AddMovementInput(forwardDirection, moveInputAxis.X);
-		pawnControlled->AddMovementInput(rightDirection, moveInputAxis.Y);
+		ControlledPawn->AddMovementInput(ForwardDir, InputAxis.X);
+		ControlledPawn->AddMovementInput(RightDir, InputAxis.Y);
 	}	
 }

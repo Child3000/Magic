@@ -36,14 +36,14 @@ private:
 	UPROPERTY(EditDefaultsOnly, Category="Input")
 	TObjectPtr<UInputAction> MoveAction;
 
-	void OnInputMove(const FInputActionValue& Value);
+	void InputMove(const FInputActionValue& Value);
 
 	#pragma endregion
 
 	#pragma region [HIGHLIGHT]
 
 	// track the actor that is currently pointing at.
-	TScriptInterface<IMagicInteractGuide> _currentInteractGuide = nullptr;
+	TScriptInterface<IMagicInteractGuide> CurrentGuide = nullptr;
 
 	// called per frame from PlayerTick, which runs on locally-controlled player side only.
 	void CursorTrace();
