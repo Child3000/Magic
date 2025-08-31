@@ -4,13 +4,13 @@
 
 #include "CoreMinimal.h"
 #include "GameFramework/GameModeBase.h"
-#include "MagicGameModeBase.generated.h"
+#include "MGGameModeBase.generated.h"
 
 /**
  * 
  */
 UCLASS()
-class MAGIC_API AMagicGameModeBase : public AGameModeBase
+class MAGIC_API AMGGameModeBase : public AGameModeBase
 {
 	GENERATED_BODY()
 };

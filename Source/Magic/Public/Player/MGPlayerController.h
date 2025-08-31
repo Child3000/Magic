@@ -4,10 +4,10 @@
 
 #include "CoreMinimal.h"
 #include "GameFramework/PlayerController.h"
-#include "Interaction/MagicInteractGuide.h"
-#include "MagicPlayerController.generated.h"
+#include "Interaction/MGInteractGuide.h"
+#include "MGPlayerController.generated.h"
 
-class AMagicProjectileBase;
+class AMGProjectileBase;
 struct FInputActionValue;
 class UInputAction;
 class UInputMappingContext;
@@ -15,12 +15,12 @@ class UInputMappingContext;
  * 
  */
 UCLASS()
-class MAGIC_API AMagicPlayerController : public APlayerController
+class MAGIC_API AMGPlayerController : public APlayerController
 {
 	GENERATED_BODY()
 
 public:
-	AMagicPlayerController();
+	AMGPlayerController();
 	
 protected:
 	virtual void BeginPlay() override;
@@ -50,7 +50,7 @@ private:
 	#pragma region [HIGHLIGHT]
 
 	// track the actor that is currently pointing at.
-	TScriptInterface<IMagicInteractGuide> CurrentGuide = nullptr;
+	TScriptInterface<IMGInteractGuide> CurrentGuide = nullptr;
 
 	// called per frame from PlayerTick, which runs on locally-controlled player side only.
 	void CursorTrace();

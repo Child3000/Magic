@@ -3,17 +3,17 @@
 #pragma once
 
 #include "CoreMinimal.h"
-#include "Character/MagicCharacterBase.h"
-#include "Interaction/MagicInteractGuide.h"
-#include "MagicMonster.generated.h"
+#include "Character/MGCharacterBase.h"
+#include "Interaction/MGInteractGuide.h"
+#include "MGMonster.generated.h"
 
 UCLASS()
-class MAGIC_API AMagicMonster : public AMagicCharacterBase, public IMagicInteractGuide
+class MAGIC_API AMGMonster : public AMGCharacterBase, public IMGInteractGuide
 {
 	GENERATED_BODY()
 
 public:
-	AMagicMonster();
+	AMGMonster();
 private:
 	#pragma region [INTERACT GUIDE]
 

@@ -1,7 +1,7 @@
 // Copyright Bear Child
 
 
-#include "Projectile/MagicProjectileBase.h"
+#include "Projectile/MGProjectileBase.h"
 
 #include "NiagaraComponent.h"
 #include "NiagaraFunctionLibrary.h"
@@ -10,7 +10,7 @@
 #include "Kismet/GameplayStatics.h"
 
 
-AMagicProjectileBase::AMagicProjectileBase()
+AMGProjectileBase::AMGProjectileBase()
 {
 	PrimaryActorTick.bCanEverTick = false;
 
@@ -26,13 +26,13 @@ AMagicProjectileBase::AMagicProjectileBase()
 	NiagaraComp->bAutoActivate = true;
 }
 
-void AMagicProjectileBase::BeginPlay()
+void AMGProjectileBase::BeginPlay()
 {
 	Super::BeginPlay();
-	SphereComp->OnComponentHit.AddDynamic(this, &AMagicProjectileBase::ProjectileHit);
+	SphereComp->OnComponentHit.AddDynamic(this, &AMGProjectileBase::ProjectileHit);
 }
 
-void AMagicProjectileBase::Destroyed()
+void AMGProjectileBase::Destroyed()
 {
 	Super::Destroyed();
 	if (ExplodedEffect)
@@ -41,7 +41,7 @@ void AMagicProjectileBase::Destroyed()
 	}
 }
 
-void AMagicProjectileBase::ProjectileHit(UPrimitiveComponent* HitComp,
+void AMGProjectileBase::ProjectileHit(UPrimitiveComponent* HitComp,
                                          AActor* OtherActor,
                                          UPrimitiveComponent* OtherComp,
                                          FVector NormalImpulse,

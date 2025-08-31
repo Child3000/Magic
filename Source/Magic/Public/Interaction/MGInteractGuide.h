@@ -4,11 +4,11 @@
 
 #include "CoreMinimal.h"
 #include "UObject/Interface.h"
-#include "MagicInteractGuide.generated.h"
+#include "MGInteractGuide.generated.h"
 
 // This class does not need to be modified.
 UINTERFACE()
-class UMagicInteractGuide : public UInterface
+class UMGInteractGuide : public UInterface
 {
 	GENERATED_BODY()
 };
@@ -16,7 +16,7 @@ class UMagicInteractGuide : public UInterface
 /**
  * Inherited by interactable objects or characters that wish to customize its guide behaviour.
  */
-class MAGIC_API IMagicInteractGuide
+class MAGIC_API IMGInteractGuide
 {
 	GENERATED_BODY()
 

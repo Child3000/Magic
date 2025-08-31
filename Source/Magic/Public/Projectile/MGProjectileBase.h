@@ -4,7 +4,7 @@
 
 #include "CoreMinimal.h"
 #include "GameFramework/Actor.h"
-#include "MagicProjectileBase.generated.h"
+#include "MGProjectileBase.generated.h"
 
 class UNiagaraSystem;
 class UNiagaraComponent;
@@ -12,12 +12,12 @@ class USphereComponent;
 class UProjectileMovementComponent;
 
 UCLASS()
-class MAGIC_API AMagicProjectileBase : public AActor
+class MAGIC_API AMGProjectileBase : public AActor
 {
 	GENERATED_BODY()
 
 public:
-	AMagicProjectileBase();
+	AMGProjectileBase();
 protected:
 	virtual void BeginPlay() override;
 

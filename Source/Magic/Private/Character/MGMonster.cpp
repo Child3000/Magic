@@ -1,19 +1,19 @@
 // Copyright Bear Child
 
 
-#include "Character/MagicMonster.h"
+#include "Character/MGMonster.h"
 
 #include "Components/CapsuleComponent.h"
 
 
-AMagicMonster::AMagicMonster()
+AMGMonster::AMGMonster()
 {
 	PrimaryActorTick.bCanEverTick = false;
 	GetCapsuleComponent()->SetCollisionProfileName("Monster");
 	GetMesh()->SetCollisionProfileName("NoCollision");
 }
 
-void AMagicMonster::OnShowInteractGuide()
+void AMGMonster::OnShowInteractGuide()
 {
 	// UE_LOGFMT(LogMagicMonster, Log, "Show Interact Guide {0}", GetName());
 	if (InteractGuideOverlayMat)
@@ -22,7 +22,7 @@ void AMagicMonster::OnShowInteractGuide()
 	}
 }
 
-void AMagicMonster::OnHideInteractGuide()
+void AMGMonster::OnHideInteractGuide()
 {
 	// UE_LOGFMT(LogMagicMonster, Log, "Hide Interact Guide {0}", GetName());
 	if (InteractGuideOverlayMat)
@@ -31,7 +31,7 @@ void AMagicMonster::OnHideInteractGuide()
 	}
 }
 
-void AMagicMonster::ApplyOverlayMaterials(UMaterialInterface* material) const
+void AMGMonster::ApplyOverlayMaterials(UMaterialInterface* material) const
 {
 	GetMesh()->SetOverlayMaterial(material);
 	Weapon->SetOverlayMaterial(material);

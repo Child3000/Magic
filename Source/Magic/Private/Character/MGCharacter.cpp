@@ -1,14 +1,14 @@
 // Copyright Bear Child
 
 
-#include "Character/MagicCharacter.h"
+#include "Character/MGCharacter.h"
 
 #include "Camera/CameraComponent.h"
 #include "GameFramework/CharacterMovementComponent.h"
 #include "GameFramework/SpringArmComponent.h"
-#include "Projectile/MagicProjectileBase.h"
+#include "Projectile/MGProjectileBase.h"
 
-AMagicCharacter::AMagicCharacter()
+AMGCharacter::AMGCharacter()
 {
 	bUseControllerRotationPitch = false;
 	bUseControllerRotationYaw = false;
@@ -36,7 +36,7 @@ AMagicCharacter::AMagicCharacter()
 	WeaponProjectileSpawnSocketName = FName("Socket_ProjectileSpawn");
 }
 
-void AMagicCharacter::FireProjectile()
+void AMGCharacter::FireProjectile()
 {
 	FVector SpawnLocation = Weapon->GetSocketLocation(WeaponProjectileSpawnSocketName);
 	FRotator SpawnRotation = GetActorRotation();

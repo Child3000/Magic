@@ -1,11 +1,11 @@
 // Copyright Bear Child
 
 
-#include "Character/MagicCharacterBase.h"
+#include "Character/MGCharacterBase.h"
 
-const FName AMagicCharacterBase::WeaponHandSocketName = "WeaponHandSocket";
+const FName AMGCharacterBase::WeaponHandSocketName = "WeaponHandSocket";
 
-AMagicCharacterBase::AMagicCharacterBase()
+AMGCharacterBase::AMGCharacterBase()
 {
 	PrimaryActorTick.bCanEverTick = false;
 
@@ -13,7 +13,7 @@ AMagicCharacterBase::AMagicCharacterBase()
 	Weapon->SetupAttachment(GetMesh(), WeaponHandSocketName);
 }
 
-void AMagicCharacterBase::BeginPlay()
+void AMGCharacterBase::BeginPlay()
 {
 	Super::BeginPlay();
 	

@@ -3,20 +3,20 @@
 #pragma once
 
 #include "CoreMinimal.h"
-#include "MagicCharacterBase.h"
-#include "MagicCharacter.generated.h"
+#include "MGCharacterBase.h"
+#include "MGCharacter.generated.h"
 
-class AMagicProjectileBase;
+class AMGProjectileBase;
 class UCameraComponent;
 class USpringArmComponent;
 
 UCLASS()
-class MAGIC_API AMagicCharacter : public AMagicCharacterBase
+class MAGIC_API AMGCharacter : public AMGCharacterBase
 {
 	GENERATED_BODY()
 
 public:
-	AMagicCharacter();
+	AMGCharacter();
 
 	void FireProjectile();
 	
@@ -28,7 +28,7 @@ protected:
 	TObjectPtr<UCameraComponent> CameraComp;
 
 	UPROPERTY(EditAnywhere, Category="Projectile")
-	TSubclassOf<AMagicProjectileBase> ProjectileClass;
+	TSubclassOf<AMGProjectileBase> ProjectileClass;
 
 	UPROPERTY(EditDefaultsOnly, Category="Projectile")
 	FName WeaponProjectileSpawnSocketName;

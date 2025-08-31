@@ -1,19 +1,19 @@
 // Copyright Bear Child
 
 
-#include "Player/MagicPlayerController.h"
+#include "Player/MGPlayerController.h"
 
 #include "EnhancedInputComponent.h"
 #include "EnhancedInputSubsystems.h"
-#include "Character/MagicCharacter.h"
+#include "Character/MGCharacter.h"
 #include "Kismet/GameplayStatics.h"
 
-AMagicPlayerController::AMagicPlayerController()
+AMGPlayerController::AMGPlayerController()
 {
 	bReplicates = false;
 }
 
-void AMagicPlayerController::BeginPlay()
+void AMGPlayerController::BeginPlay()
 {
 	Super::BeginPlay();
 	check(MagicContext);
@@ -31,22 +31,22 @@ void AMagicPlayerController::BeginPlay()
 	SetInputMode(InputMode);
 }
 
-void AMagicPlayerController::SetupInputComponent()
+void AMGPlayerController::SetupInputComponent()
 {
 	Super::SetupInputComponent();
 
 	auto* EnhancedInput = CastChecked<UEnhancedInputComponent>(InputComponent);
-	EnhancedInput->BindAction(MoveAction, ETriggerEvent::Triggered, this, &AMagicPlayerController::InputMove);
-	EnhancedInput->BindAction(FireAction, ETriggerEvent::Started, this, &AMagicPlayerController::InputFire);
+	EnhancedInput->BindAction(MoveAction, ETriggerEvent::Triggered, this, &AMGPlayerController::InputMove);
+	EnhancedInput->BindAction(FireAction, ETriggerEvent::Started, this, &AMGPlayerController::InputFire);
 }
 
-void AMagicPlayerController::PlayerTick(float DeltaTime)
+void AMGPlayerController::PlayerTick(float DeltaTime)
 {
 	Super::PlayerTick(DeltaTime);
 	CursorTrace();
 }
 
-void AMagicPlayerController::CursorTrace()
+void AMGPlayerController::CursorTrace()
 {
 	FHitResult HitResult;
 	ETraceTypeQuery TraceType = UEngineTypes::ConvertToTraceType(ECC_Visibility);
@@ -54,7 +54,7 @@ void AMagicPlayerController::CursorTrace()
 
 	const bool bHit = HitResult.bBlockingHit;
 	if (bHit && HitResult.GetActor() &&
-		Cast<IMagicInteractGuide>(HitResult.GetActor()))
+		Cast<IMGInteractGuide>(HitResult.GetActor()))
 	{
 		if (CurrentGuide != HitResult.GetActor())
 		{
@@ -78,7 +78,7 @@ void AMagicPlayerController::CursorTrace()
 	}
 }
 
-void AMagicPlayerController::InputMove(const FInputActionValue& Value)
+void AMGPlayerController::InputMove(const FInputActionValue& Value)
 {
 	const FVector2D InputAxis = Value.Get<FVector2D>();
 	const FRotator Rotation = GetControlRotation();
@@ -94,11 +94,11 @@ void AMagicPlayerController::InputMove(const FInputActionValue& Value)
 	}	
 }
 
-void AMagicPlayerController::InputFire(const FInputActionValue& Value)
+void AMGPlayerController::InputFire(const FInputActionValue& Value)
 {
 	if (APawn* ControlledPawn = GetPawn())
 	{
-		if (auto* MagicCharacter = CastChecked<AMagicCharacter>(ControlledPawn))
+		if (auto* MagicCharacter = CastChecked<AMGCharacter>(ControlledPawn))
 		{
 			MagicCharacter->FireProjectile();
 		}
