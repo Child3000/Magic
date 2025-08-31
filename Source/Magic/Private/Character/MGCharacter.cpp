@@ -3,6 +3,7 @@
 
 #include "Character/MGCharacter.h"
 
+#include "Action/MGActionComponent.h"
 #include "Camera/CameraComponent.h"
 #include "GameFramework/CharacterMovementComponent.h"
 #include "GameFramework/SpringArmComponent.h"
@@ -28,6 +29,8 @@ AMGCharacter::AMGCharacter()
 	CameraComp->SetupAttachment(SpringArmComp);
 	CameraComp->bUsePawnControlRotation = false;
 
+	ActionComp = CreateDefaultSubobject<UMGActionComponent>("ActionComp");
+
 	GetCharacterMovement()->bOrientRotationToMovement = true;
 	GetCharacterMovement()->RotationRate = FRotator(0, 720, 0);
 	GetCharacterMovement()->bConstrainToPlane = true;
@@ -36,7 +39,7 @@ AMGCharacter::AMGCharacter()
 	WeaponProjectileSpawnSocketName = FName("Socket_ProjectileSpawn");
 }
 
-void AMGCharacter::FireProjectile()
+void AMGCharacter::StartFireProjectile()
 {
 	FVector SpawnLocation = Weapon->GetSocketLocation(WeaponProjectileSpawnSocketName);
 	FRotator SpawnRotation = GetActorRotation();
@@ -47,4 +50,14 @@ void AMGCharacter::FireProjectile()
 	SpawnParams.SpawnCollisionHandlingOverride = ESpawnActorCollisionHandlingMethod::AlwaysSpawn;
 	
 	GetWorld()->SpawnActor(ProjectileClass, &SpawnLocation, &SpawnRotation, SpawnParams);
+}
+
+void AMGCharacter::StartSprint()
+{
+	ActionComp->StartActionByName(this, FName("Player.Ability.Sprint"));
+}
+
+void AMGCharacter::StopSprint()
+{
+	ActionComp->StopActionByName(this, FName("Player.Ability.Sprint"));
 }

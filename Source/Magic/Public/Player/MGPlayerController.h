@@ -24,7 +24,7 @@ public:
 	
 protected:
 	virtual void BeginPlay() override;
-
+	
 	virtual void SetupInputComponent() override;
 
 	virtual void PlayerTick(float DeltaTime) override;
@@ -32,19 +32,26 @@ protected:
 private:
 	#pragma region [INPUT]
 	
-	UPROPERTY(EditDefaultsOnly, Category="Input")	
+	UPROPERTY(EditDefaultsOnly, Category = "Input")	
 	TObjectPtr<UInputMappingContext> MagicContext;
 
-	UPROPERTY(EditDefaultsOnly, Category="Input")
+	UPROPERTY(EditDefaultsOnly, Category = "Input")
 	TObjectPtr<UInputAction> MoveAction;
 
-	UPROPERTY(EditDefaultsOnly, Category="Input")
+	UPROPERTY(EditDefaultsOnly, Category = "Input")
 	TObjectPtr<UInputAction> FireAction;
+
+	UPROPERTY(EditDefaultsOnly, Category = "Input")
+	TObjectPtr<UInputAction> SprintAction;
 	
 	void InputMove(const FInputActionValue& Value);
 	
 	void InputFire(const FInputActionValue& Value);
 
+	void InputStartSprint(const FInputActionValue& Value);
+
+	void InputStopSprint(const FInputActionValue& Value);
+	
 	#pragma endregion
 	
 	#pragma region [HIGHLIGHT]

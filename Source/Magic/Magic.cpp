@@ -5,4 +5,4 @@
 
 IMPLEMENT_PRIMARY_GAME_MODULE( FDefaultGameModuleImpl, Magic, "Magic" );
 
-DEFINE_LOG_CATEGORY(LogMagic);
+DEFINE_LOG_CATEGORY(LogMG);

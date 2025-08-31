@@ -6,6 +6,7 @@
 #include "MGCharacterBase.h"
 #include "MGCharacter.generated.h"
 
+class UMGActionComponent;
 class AMGProjectileBase;
 class UCameraComponent;
 class USpringArmComponent;
@@ -18,18 +19,25 @@ class MAGIC_API AMGCharacter : public AMGCharacterBase
 public:
 	AMGCharacter();
 
-	void FireProjectile();
+	void StartFireProjectile();
+
+	void StartSprint();
+
+	void StopSprint();
 	
 protected:
-	UPROPERTY(VisibleAnywhere, Category="Component")
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Component")
 	TObjectPtr<USpringArmComponent> SpringArmComp;
 
-	UPROPERTY(VisibleAnywhere, Category="Component")
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Component")
 	TObjectPtr<UCameraComponent> CameraComp;
 
-	UPROPERTY(EditAnywhere, Category="Projectile")
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Component")
+	TObjectPtr<UMGActionComponent> ActionComp;
+
+	UPROPERTY(EditAnywhere, Category = "Projectile")
 	TSubclassOf<AMGProjectileBase> ProjectileClass;
 
-	UPROPERTY(EditDefaultsOnly, Category="Projectile")
+	UPROPERTY(EditDefaultsOnly, Category = "Projectile")
 	FName WeaponProjectileSpawnSocketName;
 };

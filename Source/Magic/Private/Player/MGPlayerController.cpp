@@ -38,6 +38,8 @@ void AMGPlayerController::SetupInputComponent()
 	auto* EnhancedInput = CastChecked<UEnhancedInputComponent>(InputComponent);
 	EnhancedInput->BindAction(MoveAction, ETriggerEvent::Triggered, this, &AMGPlayerController::InputMove);
 	EnhancedInput->BindAction(FireAction, ETriggerEvent::Started, this, &AMGPlayerController::InputFire);
+	EnhancedInput->BindAction(SprintAction, ETriggerEvent::Started, this, &AMGPlayerController::InputStartSprint);
+	EnhancedInput->BindAction(SprintAction, ETriggerEvent::Completed, this, &AMGPlayerController::InputStopSprint);
 }
 
 void AMGPlayerController::PlayerTick(float DeltaTime)
@@ -98,9 +100,31 @@ void AMGPlayerController::InputFire(const FInputActionValue& Value)
 {
 	if (APawn* ControlledPawn = GetPawn())
 	{
-		if (auto* MagicCharacter = CastChecked<AMGCharacter>(ControlledPawn))
+		if (AMGCharacter* MC = CastChecked<AMGCharacter>(ControlledPawn))
 		{
-			MagicCharacter->FireProjectile();
+			MC->StartFireProjectile();
+		}
+	}
+}
+
+void AMGPlayerController::InputStartSprint(const FInputActionValue& Value)
+{
+	if (APawn* ControlledPawn = GetPawn())
+	{
+		if (AMGCharacter* MC = CastChecked<AMGCharacter>(ControlledPawn))
+		{
+			MC->StartSprint();
+		}
+	}
+}
+
+void AMGPlayerController::InputStopSprint(const FInputActionValue& Value)
+{
+	if (APawn* ControlledPawn = GetPawn())
+	{
+		if (AMGCharacter* MC = CastChecked<AMGCharacter>(ControlledPawn))
+		{
+			MC->StopSprint();
 		}
 	}
 }
