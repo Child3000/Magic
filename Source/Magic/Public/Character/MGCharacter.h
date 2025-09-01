@@ -34,10 +34,4 @@ protected:
 
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Component")
 	TObjectPtr<UMGActionComponent> ActionComp;
-
-	UPROPERTY(EditAnywhere, Category = "Projectile")
-	TSubclassOf<AMGProjectileBase> ProjectileClass;
-
-	UPROPERTY(EditDefaultsOnly, Category = "Projectile")
-	FName WeaponProjectileSpawnSocketName;
 };

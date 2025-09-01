@@ -35,21 +35,11 @@ AMGCharacter::AMGCharacter()
 	GetCharacterMovement()->RotationRate = FRotator(0, 720, 0);
 	GetCharacterMovement()->bConstrainToPlane = true;
 	GetCharacterMovement()->bSnapToPlaneAtStart = true;
-
-	WeaponProjectileSpawnSocketName = FName("Socket_ProjectileSpawn");
 }
 
 void AMGCharacter::StartFireProjectile()
 {
-	FVector SpawnLocation = Weapon->GetSocketLocation(WeaponProjectileSpawnSocketName);
-	FRotator SpawnRotation = GetActorRotation();
-	
-	FActorSpawnParameters SpawnParams;
-	SpawnParams.Instigator = this;
-	SpawnParams.Owner = this;
-	SpawnParams.SpawnCollisionHandlingOverride = ESpawnActorCollisionHandlingMethod::AlwaysSpawn;
-	
-	GetWorld()->SpawnActor(ProjectileClass, &SpawnLocation, &SpawnRotation, SpawnParams);
+	ActionComp->StartActionByName(this, FName("Player.Ability.FireProjectile"));
 }
 
 void AMGCharacter::StartSprint()

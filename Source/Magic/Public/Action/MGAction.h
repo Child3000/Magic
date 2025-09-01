@@ -26,11 +26,21 @@ public:
 	void StopAction(AActor* Instigator);
 
 protected:
-	/* An implementable function in Blueprint to extend the behaviour of start action. */
-	UFUNCTION(BlueprintImplementableEvent, Category = "Action")
-	void BP_StartAction(AActor* Instigator);
+	/* An implementable function in Blueprint to extend or override behaviour of start action.
+	 * Keep ParentNode to extend native implementation; otherwise, override.
+	 */
+	UFUNCTION(BlueprintNativeEvent, Category = "Action")
+	void ActionStarted(AActor* Instigator);
 
-	/* An implementable function in Blueprint to extend the behaviour of stop action. */
-	UFUNCTION(BlueprintImplementableEvent, Category = "Action")
-	void BP_StopAction(AActor* Instigator);
+	/* An overrideable function in C++ to provide native implementation of start action. */
+	virtual void ActionStarted_Implementation(AActor* Instigator);
+
+	/* An implementable function in Blueprint to extend or override behaviour of stop action.
+	 * Keep ParentNode to extend native implementation; otherwise, override.
+	 */
+	UFUNCTION(BlueprintNativeEvent, Category = "Action")
+	void ActionStopped(AActor* Instigator);
+
+	/* An overrideable function in C++ to provide native implementation of stop action. */
+	virtual void ActionStopped_Implementation(AActor* Instigator);
 };

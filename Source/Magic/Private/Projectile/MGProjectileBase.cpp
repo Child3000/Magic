@@ -17,10 +17,12 @@ AMGProjectileBase::AMGProjectileBase()
 	SphereComp = CreateDefaultSubobject<USphereComponent>("Sphere");
 	SphereComp->SetCollisionProfileName("Projectile");
 	RootComponent = SphereComp;
+	
 	ProjectileComp = CreateDefaultSubobject<UProjectileMovementComponent>("ProjectileMovement");
 	ProjectileComp->InitialSpeed = 1500;
 	ProjectileComp->bRotationFollowsVelocity = true;
-	ProjectileComp->ProjectileGravityScale = 0.7f;
+	ProjectileComp->ProjectileGravityScale = 0;
+	
 	NiagaraComp = CreateDefaultSubobject<UNiagaraComponent>("Niagara");
 	NiagaraComp->SetupAttachment(RootComponent);
 	NiagaraComp->bAutoActivate = true;
@@ -47,9 +49,6 @@ void AMGProjectileBase::ProjectileHit(UPrimitiveComponent* HitComp,
                                          FVector NormalImpulse,
                                          const FHitResult& Hit)
 {
-	if (IsValid(this))
-	{
-		Destroy();
-	}
+	Destroy();
 }
 

@@ -25,6 +25,19 @@ void UMGActionComponent::AddAction(TSubclassOf<UMGAction> ActionClass)
 	}
 }
 
+void UMGActionComponent::AddActions(TArray<TSubclassOf<UMGAction>> ActionClasses)
+{
+	if (ActionClasses.Num() == 0)
+	{
+		return;
+	}
+	
+	for (TSubclassOf<UMGAction> ActionClass : ActionClasses)
+	{
+		AddAction(ActionClass);
+	}
+}
+
 bool UMGActionComponent::StartActionByName(AActor* Instigator, FName ActionName)
 {
 	for (UMGAction* Action : Actions)
@@ -49,5 +62,11 @@ bool UMGActionComponent::StopActionByName(AActor* Instigator, FName ActionName)
 		}
 	}
 	return false;
+}
+
+void UMGActionComponent::BeginPlay()
+{
+	Super::BeginPlay();
+	AddActions(DefaultGrantedActions);
 }
 

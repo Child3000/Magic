@@ -21,6 +21,10 @@ public:
 	UFUNCTION(BlueprintCallable, Category = "Action")
 	void AddAction(TSubclassOf<UMGAction> ActionClass);
 
+	/* Add new action instances. */
+	UFUNCTION(BlueprintCallable, Category = "Action")
+	void AddActions(TArray<TSubclassOf<UMGAction>> ActionClasses);
+
 	/* Start the first found action instance. Returns true if action started; otherwise, false. */
 	UFUNCTION(BlueprintCallable, Category = "Action")
 	bool StartActionByName(AActor* Instigator, FName ActionName);
@@ -30,7 +34,13 @@ public:
 	bool StopActionByName(AActor* Instigator,FName ActionName);
 
 protected:
+	/* The default actions that are allowed to do. */
+	UPROPERTY(EditDefaultsOnly, Category = "Action", meta = (AllowAbstract = "false", BlueprintBaseOnly = "true"))
+	TArray<TSubclassOf<UMGAction>> DefaultGrantedActions;
+	
 	/* A list of actions that are allowed to do at the moment. */
 	UPROPERTY()
 	TArray<TObjectPtr<UMGAction>> Actions;
+	
+	virtual void BeginPlay() override;
 };

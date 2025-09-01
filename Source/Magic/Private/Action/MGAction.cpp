@@ -6,11 +6,19 @@
 void UMGAction::StartAction(AActor* Instigator)
 {
 	UE_LOG(LogTemp, Log, TEXT("Running %s"), *GetNameSafe(this));
-	BP_StartAction(Instigator);
+	ActionStarted(Instigator);
 }
 
 void UMGAction::StopAction(AActor* Instigator)
 {
 	UE_LOG(LogTemp, Log, TEXT("Stopped %s"), *GetNameSafe(this));
-	BP_StopAction(Instigator);
+	ActionStopped(Instigator);
+}
+
+void UMGAction::ActionStarted_Implementation(AActor* Instigator)
+{
+}
+
+void UMGAction::ActionStopped_Implementation(AActor* Instigator)
+{
 }

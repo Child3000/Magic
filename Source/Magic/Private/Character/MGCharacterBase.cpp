@@ -3,14 +3,18 @@
 
 #include "Character/MGCharacterBase.h"
 
-const FName AMGCharacterBase::WeaponHandSocketName = "WeaponHandSocket";
-
 AMGCharacterBase::AMGCharacterBase()
 {
 	PrimaryActorTick.bCanEverTick = false;
 
+	WeaponHandSocketName = "Socket_Hand_Weapon";
 	Weapon = CreateDefaultSubobject<USkeletalMeshComponent>("Weapon");
 	Weapon->SetupAttachment(GetMesh(), WeaponHandSocketName);
+}
+
+USkeletalMeshComponent* AMGCharacterBase::GetWeaponMesh() const
+{
+	return Weapon;
 }
 
 void AMGCharacterBase::BeginPlay()

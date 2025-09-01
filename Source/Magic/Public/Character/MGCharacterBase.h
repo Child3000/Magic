@@ -14,11 +14,15 @@ class MAGIC_API AMGCharacterBase : public ACharacter
 public:
 	AMGCharacterBase();
 
+	/* Returns the mesh of weapon. */
+	USkeletalMeshComponent* GetWeaponMesh() const;
+
 protected:
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Weapon")
 	TObjectPtr<USkeletalMeshComponent> Weapon;
 
-	static const FName WeaponHandSocketName;
+	UPROPERTY(EditAnywhere, Category = "Weapon")
+	FName WeaponHandSocketName;
 	
 protected:
 	virtual void BeginPlay() override;
