@@ -32,6 +32,9 @@ void AMGProjectileBase::BeginPlay()
 {
 	Super::BeginPlay();
 	SphereComp->OnComponentHit.AddDynamic(this, &AMGProjectileBase::ProjectileHit);
+
+	// ignore collision with the projectile's owner.
+	SphereComp->IgnoreActorWhenMoving(GetOwner(), true);
 }
 
 void AMGProjectileBase::Destroyed()

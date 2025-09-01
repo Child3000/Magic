@@ -11,6 +11,7 @@ UMGAction_FireProjectile::UMGAction_FireProjectile()
 	ActionName = FName("Player.Ability.FireProjectile");
 	SocketOfWeaponForProjectile = FName("Socket_Spawn_Projectile");
 	DelayElapsedTimeSpawnProjectile = 0;
+	AnimRate = 1.0;
 }
 
 void UMGAction_FireProjectile::ActionStarted_Implementation(AActor* Instigator)
@@ -31,9 +32,15 @@ void UMGAction_FireProjectile::ActionStarted_Implementation(AActor* Instigator)
 		// play fire projectile animation.
 		if (AnimMontage)
 		{
-			CB->PlayAnimMontage(AnimMontage);
+			CB->PlayAnimMontage(AnimMontage, AnimRate);
 		}
 
+		// force spawn projectile when timer is not elapsed finished.
+		if (GetWorld()->GetTimerManager().IsTimerActive(TimerHandleOfSpawnProjectile))
+		{
+			TimeElapsed_SpawnProjectile(CB);
+		}
+		
 		// spawn projectile.
 		FTimerDelegate TimerDelegate;
 		TimerDelegate.BindUFunction(this, FName("TimeElapsed_SpawnProjectile"), CB);
@@ -63,9 +70,11 @@ void UMGAction_FireProjectile::TimeElapsed_SpawnProjectile(AMGCharacterBase* Ins
 	SpawnParams.SpawnCollisionHandlingOverride = ESpawnActorCollisionHandlingMethod::AlwaysSpawn;
 	SpawnParams.Instigator = Instigator;
 	SpawnParams.Owner = Instigator;
-	
-	GetWorld()->SpawnActor<AMGProjectileBase>(ProjectileClass, SpawnTransform, SpawnParams);
 
+	if (AMGProjectileBase* NewActor = GetWorld()->SpawnActor<AMGProjectileBase>(ProjectileClass, SpawnTransform, SpawnParams))
+	{
+		Instigator->MoveIgnoreActorAdd(NewActor);
+	}
 	StopAction(Instigator);;
 }
 

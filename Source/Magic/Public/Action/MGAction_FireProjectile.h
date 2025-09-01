@@ -36,6 +36,10 @@ private:
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Projectile", meta = (AllowPrivateAccess = "true"))
 	TObjectPtr<UAnimMontage> AnimMontage;
 
+	/* The rate of animation speed. */
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Projectile", meta = (AllowPrivateAccess = "true"))
+	float AnimRate;
+
 	/* The delay elapsed time in seconds before projectile is actually spawned. */
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Projectile", meta = (AllowPrivateAccess = "true", ClampMin = "0.0", Units = "s"))
 	float DelayElapsedTimeSpawnProjectile;
