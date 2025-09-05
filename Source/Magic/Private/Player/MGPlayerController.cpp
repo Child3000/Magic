@@ -40,6 +40,8 @@ void AMGPlayerController::SetupInputComponent()
 	EnhancedInput->BindAction(FireAction, ETriggerEvent::Started, this, &AMGPlayerController::InputFire);
 	EnhancedInput->BindAction(SprintAction, ETriggerEvent::Started, this, &AMGPlayerController::InputStartSprint);
 	EnhancedInput->BindAction(SprintAction, ETriggerEvent::Completed, this, &AMGPlayerController::InputStopSprint);
+	EnhancedInput->BindAction(JumpAction, ETriggerEvent::Started, this, &AMGPlayerController::InputStartJump);
+	EnhancedInput->BindAction(JumpAction, ETriggerEvent::Completed, this, &AMGPlayerController::InputStopJump);
 }
 
 void AMGPlayerController::PlayerTick(float DeltaTime)
@@ -125,6 +127,28 @@ void AMGPlayerController::InputStopSprint(const FInputActionValue& Value)
 		if (AMGCharacter* MC = CastChecked<AMGCharacter>(ControlledPawn))
 		{
 			MC->StopSprint();
+		}
+	}
+}
+
+void AMGPlayerController::InputStartJump(const FInputActionValue& Value)
+{
+	if (APawn* ControlledPawn = GetPawn())
+	{
+		if (AMGCharacter* MC = CastChecked<AMGCharacter>(ControlledPawn))
+		{
+			MC->StartJump();
+		}
+	}
+}
+
+void AMGPlayerController::InputStopJump(const FInputActionValue& Value)
+{
+	if (APawn* ControlledPawn = GetPawn())
+	{
+		if (AMGCharacter* MC = CastChecked<AMGCharacter>(ControlledPawn))
+		{
+			MC->StopJump();
 		}
 	}
 }

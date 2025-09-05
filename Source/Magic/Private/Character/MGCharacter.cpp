@@ -35,6 +35,19 @@ AMGCharacter::AMGCharacter()
 	GetCharacterMovement()->RotationRate = FRotator(0, 720, 0);
 	GetCharacterMovement()->bConstrainToPlane = true;
 	GetCharacterMovement()->bSnapToPlaneAtStart = true;
+	GetCharacterMovement()->GravityScale = 1.2;
+	GetCharacterMovement()->JumpZVelocity = 500;
+	GetCharacterMovement()->AirControl = 1.0;
+}
+
+void AMGCharacter::StartJump()
+{
+	ActionComp->StartActionByName(this, FName("Player.Ability.Jump"));
+}
+
+void AMGCharacter::StopJump()
+{
+	ActionComp->StopActionByName(this, FName("Player.Ability.Jump"));
 }
 
 void AMGCharacter::StartFireProjectile()

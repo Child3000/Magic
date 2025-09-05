@@ -43,6 +43,9 @@ private:
 
 	UPROPERTY(EditDefaultsOnly, Category = "Input")
 	TObjectPtr<UInputAction> SprintAction;
+
+	UPROPERTY(EditDefaultsOnly, Category = "Input")
+	TObjectPtr<UInputAction> JumpAction;
 	
 	void InputMove(const FInputActionValue& Value);
 	
@@ -51,6 +54,10 @@ private:
 	void InputStartSprint(const FInputActionValue& Value);
 
 	void InputStopSprint(const FInputActionValue& Value);
+
+	void InputStartJump(const FInputActionValue& Value);
+
+	void InputStopJump(const FInputActionValue& Value);
 	
 	#pragma endregion
 	

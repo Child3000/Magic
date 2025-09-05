@@ -19,6 +19,10 @@ class MAGIC_API AMGCharacter : public AMGCharacterBase
 public:
 	AMGCharacter();
 
+	void StartJump();
+
+	void StopJump();
+	
 	void StartFireProjectile();
 
 	void StartSprint();
