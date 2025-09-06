@@ -1,14 +1,14 @@
 // Copyright Bear Child
 
 
-#include "InteractableObjects/ExplosiveBarrel.h"
+#include "InteractableObjects/MGExplosiveBarrel.h"
 
 #include "NiagaraFunctionLibrary.h"
 #include "NiagaraSystem.h"
 #include "PhysicsEngine/RadialForceComponent.h"
 
 
-AExplosiveBarrel::AExplosiveBarrel()
+AMGExplosiveBarrel::AMGExplosiveBarrel()
 {
 	PrimaryActorTick.bCanEverTick = false;
 
@@ -31,13 +31,13 @@ AExplosiveBarrel::AExplosiveBarrel()
 	RadialForceComponent->SetupAttachment(MeshComponent);
 }
 
-void AExplosiveBarrel::BeginPlay()
+void AMGExplosiveBarrel::BeginPlay()
 {
 	Super::BeginPlay();
-	MeshComponent->OnComponentHit.AddDynamic(this, &AExplosiveBarrel::OnComponentHit);
+	MeshComponent->OnComponentHit.AddDynamic(this, &AMGExplosiveBarrel::OnComponentHit);
 }
 
-void AExplosiveBarrel::OnComponentHit(UPrimitiveComponent* HitComponent, AActor* OtherActor,
+void AMGExplosiveBarrel::OnComponentHit(UPrimitiveComponent* HitComponent, AActor* OtherActor,
 	UPrimitiveComponent* OtherComponent, FVector NormalImpulse, const FHitResult& Hit)
 {
 	RadialForceComponent->FireImpulse();

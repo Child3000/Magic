@@ -7,6 +7,7 @@
 #include "Camera/CameraComponent.h"
 #include "GameFramework/CharacterMovementComponent.h"
 #include "GameFramework/SpringArmComponent.h"
+#include "Interaction/MGInteractionComponent.h"
 #include "Projectile/MGProjectileBase.h"
 
 AMGCharacter::AMGCharacter()
@@ -30,7 +31,9 @@ AMGCharacter::AMGCharacter()
 	CameraComp->bUsePawnControlRotation = false;
 
 	ActionComp = CreateDefaultSubobject<UMGActionComponent>("ActionComp");
-
+	InteractionComp = CreateDefaultSubobject<UMGInteractionComponent>("InteractionComp");
+	InteractionComp->SetAutoActivate(true);
+	
 	GetCharacterMovement()->bOrientRotationToMovement = true;
 	GetCharacterMovement()->RotationRate = FRotator(0, 720, 0);
 	GetCharacterMovement()->bConstrainToPlane = true;

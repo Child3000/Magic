@@ -6,6 +6,7 @@
 #include "MGCharacterBase.h"
 #include "MGCharacter.generated.h"
 
+class UMGInteractionComponent;
 class UMGActionComponent;
 class AMGProjectileBase;
 class UCameraComponent;
@@ -38,4 +39,7 @@ protected:
 
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Component")
 	TObjectPtr<UMGActionComponent> ActionComp;
+
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Component")
+	TObjectPtr<UMGInteractionComponent> InteractionComp;
 };

@@ -4,18 +4,18 @@
 
 #include "CoreMinimal.h"
 #include "GameFramework/Actor.h"
-#include "ExplosiveBarrel.generated.h"
+#include "MGExplosiveBarrel.generated.h"
 
 class UNiagaraSystem;
 class URadialForceComponent;
 
 UCLASS()
-class MAGIC_API AExplosiveBarrel : public AActor
+class MAGIC_API AMGExplosiveBarrel : public AActor
 {
 	GENERATED_BODY()
 
 public:
-	AExplosiveBarrel();
+	AMGExplosiveBarrel();
 
 protected:
 	virtual void BeginPlay() override;
