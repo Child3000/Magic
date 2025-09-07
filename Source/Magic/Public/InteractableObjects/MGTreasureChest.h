@@ -47,7 +47,9 @@ private:
 	float LidClosedRoll;
 	
 protected:
-	bool _bChestOpened;
+	uint32 _bChestOpened:1;
 	
-	void ActivateChest(bool bActivate) const;
+	void ActivateChest(bool bActivate);
+	
+	bool IsChestOpened() const;
 };

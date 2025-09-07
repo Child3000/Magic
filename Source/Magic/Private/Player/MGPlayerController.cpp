@@ -42,44 +42,12 @@ void AMGPlayerController::SetupInputComponent()
 	EnhancedInput->BindAction(SprintAction, ETriggerEvent::Completed, this, &AMGPlayerController::InputStopSprint);
 	EnhancedInput->BindAction(JumpAction, ETriggerEvent::Started, this, &AMGPlayerController::InputStartJump);
 	EnhancedInput->BindAction(JumpAction, ETriggerEvent::Completed, this, &AMGPlayerController::InputStopJump);
+	EnhancedInput->BindAction(InteractAction, ETriggerEvent::Started, this, &AMGPlayerController::InputInteract);
 }
 
 void AMGPlayerController::PlayerTick(float DeltaTime)
 {
 	Super::PlayerTick(DeltaTime);
-	CursorTrace();
-}
-
-void AMGPlayerController::CursorTrace()
-{
-	FHitResult HitResult;
-	ETraceTypeQuery TraceType = UEngineTypes::ConvertToTraceType(ECC_Visibility);
-	GetHitResultUnderCursorByChannel(TraceType, false, HitResult);
-
-	const bool bHit = HitResult.bBlockingHit;
-	if (bHit && HitResult.GetActor() &&
-		Cast<IMGInteractGuide>(HitResult.GetActor()))
-	{
-		if (CurrentGuide != HitResult.GetActor())
-		{
-			// hide previous guide if any.
-			if (IsValid(CurrentGuide.GetObject()))
-				CurrentGuide->OnHideInteractGuide();
-			
-			// show current guide.
-			CurrentGuide = HitResult.GetActor();
-			CurrentGuide->OnShowInteractGuide();
-		}
-	}
-	else
-	{
-		// hide guide.
-		if (IsValid(CurrentGuide.GetObject()))
-		{
-			CurrentGuide->OnHideInteractGuide();
-			CurrentGuide = nullptr;
-		}
-	}
 }
 
 void AMGPlayerController::InputMove(const FInputActionValue& Value)
@@ -149,6 +117,17 @@ void AMGPlayerController::InputStopJump(const FInputActionValue& Value)
 		if (AMGCharacter* MC = CastChecked<AMGCharacter>(ControlledPawn))
 		{
 			MC->StopJump();
+		}
+	}
+}
+
+void AMGPlayerController::InputInteract(const FInputActionValue& Value)
+{
+	if (APawn* ControlledPawn = GetPawn())
+	{
+		if (AMGCharacter* MC = CastChecked<AMGCharacter>(ControlledPawn))
+		{
+			MC->Interact();
 		}
 	}
 }

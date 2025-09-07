@@ -23,5 +23,12 @@ class MAGIC_API IMGInteractable
 	// Add interface functions to this class. This is the class that will be inherited to implement this interface.
 	
 public:
+	/* Returns true if the actor is interactable at the moment; otherwise, false. */
+	virtual bool IsInteractableNow();
+	
 	virtual void Interact(const FMGInteractorInfo& Info);
+
+	virtual void OnShowInteractGuide();
+	
+	virtual void OnHideInteractGuide();
 };

@@ -25,6 +25,7 @@ AMGCharacter::AMGCharacter()
 	SpringArmComp->bInheritPitch = false;
 	SpringArmComp->bInheritYaw = false;
 	SpringArmComp->bInheritRoll = false;
+	SpringArmComp->bDoCollisionTest = false;
 	
 	CameraComp = CreateDefaultSubobject<UCameraComponent>("Camera");
 	CameraComp->SetupAttachment(SpringArmComp);
@@ -66,4 +67,9 @@ void AMGCharacter::StartSprint()
 void AMGCharacter::StopSprint()
 {
 	ActionComp->StopActionByName(this, FName("Player.Ability.Sprint"));
+}
+
+void AMGCharacter::Interact()
+{
+	InteractionComp->OnInteract();
 }

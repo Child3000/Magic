@@ -4,7 +4,6 @@
 
 #include "CoreMinimal.h"
 #include "GameFramework/PlayerController.h"
-#include "Interaction/MGInteractGuide.h"
 #include "MGPlayerController.generated.h"
 
 class AMGProjectileBase;
@@ -46,6 +45,9 @@ private:
 
 	UPROPERTY(EditDefaultsOnly, Category = "Input")
 	TObjectPtr<UInputAction> JumpAction;
+
+	UPROPERTY(EditDefaultsOnly, Category = "Input")
+	TObjectPtr<UInputAction> InteractAction;
 	
 	void InputMove(const FInputActionValue& Value);
 	
@@ -58,16 +60,8 @@ private:
 	void InputStartJump(const FInputActionValue& Value);
 
 	void InputStopJump(const FInputActionValue& Value);
+
+	void InputInteract(const FInputActionValue& Value);
 	
-	#pragma endregion
-	
-	#pragma region [HIGHLIGHT]
-
-	// track the actor that is currently pointing at.
-	TScriptInterface<IMGInteractGuide> CurrentGuide = nullptr;
-
-	// called per frame from PlayerTick, which runs on locally-controlled player side only.
-	void CursorTrace();
-
 	#pragma endregion
 };

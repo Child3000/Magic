@@ -7,6 +7,8 @@
 #include "MGInteractionComponent.generated.h"
 
 
+class IMGInteractable;
+
 UCLASS(ClassGroup=(Custom), meta=(BlueprintSpawnableComponent))
 class MAGIC_API UMGInteractionComponent : public UActorComponent
 {
@@ -45,4 +47,22 @@ protected:
 
 	/** Cached object query params derived from ObjectTypesToAffect */
 	FCollisionObjectQueryParams CollisionObjectQueryParams;
+
+
+public:
+	void OnInteract() const;
+protected:
+	void TraceInteractGuide();
+private:
+	/* The current interact guide detected. */
+	TScriptInterface<IMGInteractable> _currentInteractGuide = nullptr;
+
+
+private:
+	/* The current actor selected from best results. */
+	TWeakObjectPtr<AActor> _bestResultActor = nullptr;
+protected:
+	void SetBestResultActor(AActor* NewActor);
+	
+	AActor* GetBestResultActor() const;
 };

@@ -25,11 +25,12 @@ AMGTreasureChest::AMGTreasureChest()
 	_bChestOpened = false;
 }
 
+
 void AMGTreasureChest::BeginPlay()
 {
 	Super::BeginPlay();
 
-	// Open or close the chest.
+	// Set up initial state of treasure chest.
 	ActivateChest(bInitialOpened);
 }
 
@@ -59,13 +60,22 @@ void AMGTreasureChest::Interact(const FMGInteractorInfo& Info)
 	}
 
 	// Open the chest.
-	ActivateChest(true);
+	ActivateChest(!IsChestOpened());
 }
 
 
-void AMGTreasureChest::ActivateChest(bool bActivate) const
+void AMGTreasureChest::ActivateChest(bool bActivate)
 {
+	// Mark chest opened.
+	_bChestOpened = bActivate;
+	
 	FRotator NewRotator = bActivate ? FRotator(0, 0, LidOpenedRoll) : FRotator(0, 0, LidClosedRoll);
 	LidMeshRotator->SetRelativeRotation(NewRotator);
+}
+
+
+bool AMGTreasureChest::IsChestOpened() const
+{
+	return _bChestOpened;
 }
 

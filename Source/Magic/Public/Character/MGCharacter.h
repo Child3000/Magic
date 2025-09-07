@@ -29,6 +29,8 @@ public:
 	void StartSprint();
 
 	void StopSprint();
+
+	void Interact();
 	
 protected:
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Component")
