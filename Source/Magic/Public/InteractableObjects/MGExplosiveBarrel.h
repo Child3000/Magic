@@ -4,21 +4,19 @@
 
 #include "CoreMinimal.h"
 #include "GameFramework/Actor.h"
+#include "Interaction/MGInteractable.h"
 #include "MGExplosiveBarrel.generated.h"
 
 class UNiagaraSystem;
 class URadialForceComponent;
 
 UCLASS()
-class MAGIC_API AMGExplosiveBarrel : public AActor
+class MAGIC_API AMGExplosiveBarrel : public AActor, public IMGInteractable
 {
 	GENERATED_BODY()
 
 public:
 	AMGExplosiveBarrel();
-
-protected:
-	virtual void BeginPlay() override;
 	
 protected:
 	#pragma region Components
@@ -34,8 +32,7 @@ protected:
 
 	#pragma endregion Components
 
+	
 protected:
-	UFUNCTION()
-	void OnComponentHit(UPrimitiveComponent* HitComponent, AActor* OtherActor, UPrimitiveComponent* OtherComponent,
-	                    FVector NormalImpulse, const FHitResult& Hit);
+	virtual void Interact(const FMGInteractorInfo& Info) override;
 };

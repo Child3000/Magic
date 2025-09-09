@@ -31,15 +31,10 @@ AMGExplosiveBarrel::AMGExplosiveBarrel()
 	RadialForceComponent->SetupAttachment(MeshComponent);
 }
 
-void AMGExplosiveBarrel::BeginPlay()
+void AMGExplosiveBarrel::Interact(const FMGInteractorInfo& Info)
 {
-	Super::BeginPlay();
-	MeshComponent->OnComponentHit.AddDynamic(this, &AMGExplosiveBarrel::OnComponentHit);
-}
+	IMGInteractable::Interact(Info);
 
-void AMGExplosiveBarrel::OnComponentHit(UPrimitiveComponent* HitComponent, AActor* OtherActor,
-	UPrimitiveComponent* OtherComponent, FVector NormalImpulse, const FHitResult& Hit)
-{
 	RadialForceComponent->FireImpulse();
 	
 	UNiagaraFunctionLibrary::SpawnSystemAtLocation(this, ExplodeEffect, GetActorLocation());

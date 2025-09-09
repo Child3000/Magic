@@ -40,7 +40,7 @@ AMGCharacter::AMGCharacter()
 	GetCharacterMovement()->bConstrainToPlane = true;
 	GetCharacterMovement()->bSnapToPlaneAtStart = true;
 	GetCharacterMovement()->GravityScale = 1.2;
-	GetCharacterMovement()->JumpZVelocity = 500;
+	GetCharacterMovement()->JumpZVelocity = 600;
 	GetCharacterMovement()->AirControl = 1.0;
 }
 
