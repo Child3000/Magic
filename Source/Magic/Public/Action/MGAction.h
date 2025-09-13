@@ -3,8 +3,11 @@
 #pragma once
 
 #include "CoreMinimal.h"
+#include "GameplayTagContainer.h"
 #include "UObject/Object.h"
 #include "MGAction.generated.h"
+
+class UMGActionComponent;
 
 /**
  * 
@@ -25,6 +28,9 @@ public:
 	/* Stop the action from an instigator source. */
 	void StopAction(AActor* Instigator);
 
+	/* Returns the owning component. */
+	UMGActionComponent* GetOwningActionComponent() const;
+
 protected:
 	/* An implementable function in Blueprint to extend or override behaviour of start action.
 	 * Keep ParentNode to extend native implementation; otherwise, override.
@@ -43,4 +49,15 @@ protected:
 
 	/* An overrideable function in C++ to provide native implementation of stop action. */
 	virtual void ActionStopped_Implementation(AActor* Instigator);
+
+
+protected:
+	UPROPERTY(EditDefaultsOnly, Category = "Tags")
+	/* These tags are granted when activated, and removed when deactivated. */
+	FGameplayTagContainer TagsGrantedDuringActivation;
+
+	UPROPERTY(EditDefaultsOnly, Category = "Tags")
+	/* The activations don't happen when these tags are active. */
+	FGameplayTagContainer TagsToBlockActivation;
+
 };

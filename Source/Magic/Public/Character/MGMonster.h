@@ -3,12 +3,13 @@
 #pragma once
 
 #include "CoreMinimal.h"
-#include "Character/MGCharacterBase.h"
-#include "Interaction/MGInteractable.h"
+#include "MGCharacter.h"
 #include "MGMonster.generated.h"
 
+class UMGObjectTagAsset;
+
 UCLASS()
-class MAGIC_API AMGMonster : public AMGCharacterBase, public IMGInteractable
+class MAGIC_API AMGMonster : public AMGCharacter
 {
 	GENERATED_BODY()
 
@@ -16,5 +17,18 @@ public:
 	AMGMonster();
 
 protected:
-	virtual bool IsInteractableNow() override;
+	virtual void BeginPlay() override;
+	
+protected:
+	UFUNCTION()
+	void OnComponentHit(UPrimitiveComponent* HitComponent, AActor* OtherActor, UPrimitiveComponent* OtherComponent,
+	                    FVector NormalImpulse, const FHitResult& Hit);
+
+
+protected:
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Tags")
+	TObjectPtr<UMGObjectTagAsset> RespondToHitObjectTags;
+
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Tags")
+	TObjectPtr<UAnimMontage> BeingHitMontage;
 };

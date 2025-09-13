@@ -2,18 +2,19 @@
 
 
 #include "Projectile/MGProjectileBase.h"
-
 #include "NiagaraComponent.h"
 #include "NiagaraFunctionLibrary.h"
 #include "Components/SphereComponent.h"
 #include "GameFramework/ProjectileMovementComponent.h"
-#include "Kismet/GameplayStatics.h"
+#include "Tag/MGObjectTagComponent.h"
 
 
 AMGProjectileBase::AMGProjectileBase()
 {
 	PrimaryActorTick.bCanEverTick = false;
 
+	TagComp = CreateDefaultSubobject<UMGObjectTagComponent>("ObjectTag");
+	
 	SphereComp = CreateDefaultSubobject<USphereComponent>("Sphere");
 	SphereComp->SetCollisionProfileName("Projectile");
 	RootComponent = SphereComp;

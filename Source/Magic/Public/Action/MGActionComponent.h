@@ -3,6 +3,7 @@
 #pragma once
 
 #include "CoreMinimal.h"
+#include "GameplayTagContainer.h"
 #include "Components/ActorComponent.h"
 #include "MGActionComponent.generated.h"
 
@@ -34,6 +35,9 @@ public:
 	bool StopActionByName(AActor* Instigator,FName ActionName);
 
 protected:
+	virtual void TickComponent(float DeltaTime, enum ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction) override;
+
+protected:
 	/* The default actions that are allowed to do. */
 	UPROPERTY(EditDefaultsOnly, Category = "Action", meta = (AllowAbstract = "false", BlueprintBaseOnly = "true"))
 	TArray<TSubclassOf<UMGAction>> DefaultGrantedActions;
@@ -43,4 +47,19 @@ protected:
 	TArray<TObjectPtr<UMGAction>> Actions;
 	
 	virtual void BeginPlay() override;
+
+
+public:
+	/* Add @Tags to active gameplay tags. */
+	void AddActiveGameplayTag(const FGameplayTagContainer& Tags);
+
+	/* Remove @Tags from active gameplay tags. */
+	void RemoveActiveGameplayTag(const FGameplayTagContainer& Tags);
+
+	/* Returns the active gameplay tags. */
+	const FGameplayTagContainer& GetActiveGameplayTag() const;
+	
+protected:
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Tags")
+	FGameplayTagContainer ActiveGameplayTags;
 };

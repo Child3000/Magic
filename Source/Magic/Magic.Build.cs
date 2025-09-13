@@ -12,7 +12,8 @@ public class Magic : ModuleRules
 		{
 			"Core", "CoreUObject", "Engine", "InputCore", "EnhancedInput", 
 			"Niagara",
-			"DeveloperSettings"
+			"DeveloperSettings",
+			"GameplayTags",
 		});
 
 		PrivateDependencyModuleNames.AddRange(new string[] {  });

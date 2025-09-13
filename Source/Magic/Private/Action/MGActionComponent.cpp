@@ -8,7 +8,7 @@
 
 UMGActionComponent::UMGActionComponent()
 {
-	PrimaryComponentTick.bCanEverTick = false;
+	PrimaryComponentTick.bCanEverTick = true;
 }
 
 void UMGActionComponent::AddAction(TSubclassOf<UMGAction> ActionClass)
@@ -64,9 +64,34 @@ bool UMGActionComponent::StopActionByName(AActor* Instigator, FName ActionName)
 	return false;
 }
 
+void UMGActionComponent::TickComponent(float DeltaTime, enum ELevelTick TickType,
+	FActorComponentTickFunction* ThisTickFunction)
+{
+	Super::TickComponent(DeltaTime, TickType, ThisTickFunction);
+
+	FString DebugMsg = GetNameSafe(GetOwner()) + " : " + ActiveGameplayTags.ToStringSimple();
+	GEngine->AddOnScreenDebugMessage((int32)GetUniqueID(), 0, FColor::White, DebugMsg);
+}
+
 void UMGActionComponent::BeginPlay()
 {
 	Super::BeginPlay();
 	AddActions(DefaultGrantedActions);
+}
+
+
+void UMGActionComponent::AddActiveGameplayTag(const FGameplayTagContainer& Tags)
+{
+	ActiveGameplayTags.AppendTags(Tags);
+}
+
+void UMGActionComponent::RemoveActiveGameplayTag(const FGameplayTagContainer& Tags)
+{
+	ActiveGameplayTags.RemoveTags(Tags);
+}
+
+const FGameplayTagContainer& UMGActionComponent::GetActiveGameplayTag() const
+{
+	return ActiveGameplayTags;
 }
 

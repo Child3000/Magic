@@ -10,6 +10,7 @@ class UNiagaraSystem;
 class UNiagaraComponent;
 class USphereComponent;
 class UProjectileMovementComponent;
+class UMGObjectTagComponent;
 
 UCLASS(Abstract)
 class MAGIC_API AMGProjectileBase : public AActor
@@ -24,6 +25,9 @@ protected:
 
 	virtual void Destroyed() override;
 private:
+	UPROPERTY(VisibleAnywhere, Category="Tags")
+	TObjectPtr<UMGObjectTagComponent> TagComp;
+	
 	UPROPERTY(VisibleAnywhere, Category="Projectile")
 	TObjectPtr<USphereComponent> SphereComp;
 
