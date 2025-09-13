@@ -24,5 +24,5 @@ protected:
 
 private:
 	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category="Action", meta=(AllowPrivateAccess=true))
-	float DashMagnitude;
+	float DashMaxTravelDistance;
 };
