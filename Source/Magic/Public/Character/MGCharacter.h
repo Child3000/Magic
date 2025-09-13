@@ -23,6 +23,8 @@ public:
 	void StartJump();
 
 	void StopJump();
+
+	void Dash();
 	
 	void StartFireProjectile();
 

@@ -48,6 +48,9 @@ private:
 
 	UPROPERTY(EditDefaultsOnly, Category = "Input")
 	TObjectPtr<UInputAction> InteractAction;
+
+	UPROPERTY(EditDefaultsOnly, Category = "Input")
+	TObjectPtr<UInputAction> DashAction;
 	
 	void InputMove(const FInputActionValue& Value);
 	
@@ -58,6 +61,7 @@ private:
 	void InputStopSprint(const FInputActionValue& Value);
 
 	void InputStartJump(const FInputActionValue& Value);
+	void InputDash(const FInputActionValue& Value);
 
 	void InputStopJump(const FInputActionValue& Value);
 

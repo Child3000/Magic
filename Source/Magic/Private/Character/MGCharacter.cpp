@@ -54,6 +54,11 @@ void AMGCharacter::StopJump()
 	ActionComp->StopActionByName(this, FName("Player.Ability.Jump"));
 }
 
+void AMGCharacter::Dash()
+{
+	ActionComp->StartActionByName(this, FName("Player.Ability.Dash"));
+}
+
 void AMGCharacter::StartFireProjectile()
 {
 	ActionComp->StartActionByName(this, FName("Player.Ability.FireProjectile"));
