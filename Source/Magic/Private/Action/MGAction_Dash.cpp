@@ -11,15 +11,29 @@ UMGAction_Dash::UMGAction_Dash()
 	ActionName = "Player.Ability.Dash";
 	
 	DashMaxTravelDistance = 400.0f;
+
+	DashTotalInterval = 0.5f;
+
+	TickFlag = false;
+
+	CurrentDashTime = 0.01f;
+
+	DashMontageRate = 1;
 }
 
 
 void UMGAction_Dash::ActionStarted_Implementation(AActor* Instigator)
 {
 	Super::ActionStarted_Implementation(Instigator);
+
+	if (!IsValid(Instigator))
+	{
+		StopAction(Instigator);
+		return;
+	}
 	
 	ACharacter* Character = Cast<AMGCharacter>(Instigator);
-	if (!Character)
+	if (!IsValid(Character))
 	{
 		StopAction(Instigator);
 		return;
@@ -84,15 +98,195 @@ void UMGAction_Dash::ActionStarted_Implementation(AActor* Instigator)
 			break;
 		}
 	}
+
+	if (StartLocation == TeleportLocation)
+	{
+		StopAction(Character);
+		return;
+	}
 	
-	// teleport to location.
-	Character->TeleportTo(TeleportLocation, Character->GetActorRotation());
+	StartTick(FDashInterpolateInfo(StartLocation, TeleportLocation, Character));
 
-	StopAction(Instigator);
+	// // teleport to location.
+	// Character->TeleportTo(TeleportLocation, Character->GetActorRotation());
+
+	// StopAction(Instigator);
 }
-
 
 void UMGAction_Dash::ActionStopped_Implementation(AActor* Instigator)
 {
 	Super::ActionStopped_Implementation(Instigator);
+
+	StopTick();
 }
+
+
+
+void UMGAction_Dash::StartTick(const FDashInterpolateInfo& Info)
+{
+	if (TickFlag == true)
+	{
+		return;
+	}
+
+	// set values.
+	TickFlag = true;
+	DashInfo = Info;
+
+	// apply side effects on character.
+	if (ACharacter* Character = DashInfo.Character.Get())
+	{
+		// ignore inputs while dashing.
+		ApplyIgnoredInput(Character, true);
+
+		// start anim montage with loop.
+		StartPlayLoopDashMontage();
+	}
+}
+
+void UMGAction_Dash::StopTick()
+{
+	if (TickFlag == false)
+	{
+		return;
+	}
+
+	// unapply side effects from character.
+	if (ACharacter* Character = DashInfo.Character.Get())
+	{
+		// allow inputs after dashing.
+		ApplyIgnoredInput(DashInfo.Character.Get(), false);
+		
+		// stop anim montage.
+		StopPlayLoopDashMontage();
+	}
+	
+	// reset values.
+	TickFlag = false;
+	DashInfo = FDashInterpolateInfo();
+	CurrentDashTime = 0;
+}
+
+
+void UMGAction_Dash::ApplyIgnoredInput(ACharacter* Character, bool bIgnored)
+{
+	if (!IsValid(Character))
+	{
+		return;
+	}
+	
+	if (AController* Controller = Character->GetController())
+	{
+		Controller->SetIgnoreMoveInput(bIgnored);
+		Controller->SetIgnoreLookInput(bIgnored);
+	}
+}
+
+
+// FTickableGameObject Begin
+void UMGAction_Dash::Tick(float DeltaTime)
+{
+	ACharacter* Character = DashInfo.Character.Get();
+	if (!Character)
+	{
+		StopAction(Character);
+		return;
+	}
+
+	CurrentDashTime = FMath::Clamp(CurrentDashTime + DeltaTime, 0, DashTotalInterval);
+
+	const float Alpha = CurrentDashTime / DashTotalInterval;
+
+	const FVector Location = FMath::Lerp(DashInfo.StartLocation, DashInfo.EndLocation, Alpha);
+
+	Character->SetActorLocation(Location);
+
+	if (CurrentDashTime == DashTotalInterval)
+	{
+		StopAction(Character);
+	}
+}
+
+
+ETickableTickType UMGAction_Dash::GetTickableTickType() const
+{
+	return ETickableTickType::Conditional;
+}
+
+bool UMGAction_Dash::IsTickable() const
+{
+	return TickFlag;
+}
+
+UWorld* UMGAction_Dash::GetTickableGameObjectWorld() const
+{
+	return GetWorld();
+}
+
+TStatId UMGAction_Dash::GetStatId() const
+{
+	RETURN_QUICK_DECLARE_CYCLE_STAT(UMGAction_Dash, STATGROUP_Tickables);
+}
+// FTickableGameObject End
+
+// Montage Begin
+
+void UMGAction_Dash::StartPlayLoopDashMontage()
+{
+	if (!ensureAlways(DashMontage))
+	{
+		return;
+	}
+
+	const float AnimLength = DashMontage->GetPlayLength();
+	
+	if (GetWorld()->GetTimerManager().IsTimerActive(Timer_PlayLoopMontage) == false)
+	{
+		GetWorld()->GetTimerManager().SetTimer(
+			Timer_PlayLoopMontage,
+			this,
+			&UMGAction_Dash::PlayDashMontage,
+			AnimLength,
+			true,
+			0
+			);
+	}
+}
+
+void UMGAction_Dash::StopPlayLoopDashMontage()
+{
+	GetWorld()->GetTimerManager().ClearTimer(Timer_PlayLoopMontage);
+	StopDashMontage();
+}
+
+void UMGAction_Dash::PlayDashMontage()
+{
+	ACharacter* Character = DashInfo.Character.Get();
+	if (!Character)
+	{
+		return;
+	}
+	if (!ensureAlways(DashMontage))
+	{
+		return;
+	}
+	Character->PlayAnimMontage(DashMontage, DashMontageRate);
+
+	GEngine->AddOnScreenDebugMessage(5, 0, FColor::Green, TEXT("PlayAnimation"));
+}
+
+void UMGAction_Dash::StopDashMontage()
+{
+	ACharacter* Character = DashInfo.Character.Get();
+	if (!Character)
+	{
+		return;
+	}
+	if (!ensureAlways(DashMontage))
+	{
+		return;
+	}
+	Character->StopAnimMontage(DashMontage);
+}
+
+// Montage End
