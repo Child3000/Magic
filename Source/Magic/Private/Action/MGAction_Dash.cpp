@@ -271,8 +271,6 @@ void UMGAction_Dash::PlayDashMontage()
 		return;
 	}
 	Character->PlayAnimMontage(DashMontage, DashMontageRate);
-
-	GEngine->AddOnScreenDebugMessage(5, 0, FColor::Green, TEXT("PlayAnimation"));
 }
 
 void UMGAction_Dash::StopDashMontage()

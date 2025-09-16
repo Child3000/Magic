@@ -4,6 +4,7 @@
 #include "Projectile/MGProjectileBase.h"
 #include "NiagaraComponent.h"
 #include "NiagaraFunctionLibrary.h"
+#include "Attributes/MGAttributeComponent.h"
 #include "Components/SphereComponent.h"
 #include "GameFramework/ProjectileMovementComponent.h"
 #include "Tag/MGObjectTagComponent.h"
@@ -27,6 +28,8 @@ AMGProjectileBase::AMGProjectileBase()
 	NiagaraComp = CreateDefaultSubobject<UNiagaraComponent>("Niagara");
 	NiagaraComp->SetupAttachment(RootComponent);
 	NiagaraComp->bAutoActivate = true;
+
+	DamageAmount = 10;
 }
 
 void AMGProjectileBase::BeginPlay()
@@ -53,6 +56,15 @@ void AMGProjectileBase::ProjectileHit(UPrimitiveComponent* HitComp,
                                          FVector NormalImpulse,
                                          const FHitResult& Hit)
 {
+	if (OtherActor)
+	{
+		
+		if (UMGAttributeComponent* AttributeComp = OtherActor->GetComponentByClass<UMGAttributeComponent>())
+		{
+			const float Damage = -FMath::Abs(DamageAmount);
+			AttributeComp->AddHealth(Damage);
+		}
+	}
 	Destroy();
 }
 

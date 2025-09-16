@@ -4,11 +4,13 @@
 #include "Character/MGCharacter.h"
 
 #include "Action/MGActionComponent.h"
+#include "Attributes/MGAttributeComponent.h"
+#include "Blueprint/UserWidget.h"
 #include "Camera/CameraComponent.h"
 #include "GameFramework/CharacterMovementComponent.h"
 #include "GameFramework/SpringArmComponent.h"
 #include "Interaction/MGInteractionComponent.h"
-#include "Projectile/MGProjectileBase.h"
+#include "UI/MGPlayerWidget.h"
 
 AMGCharacter::AMGCharacter()
 {
@@ -34,6 +36,7 @@ AMGCharacter::AMGCharacter()
 	ActionComp = CreateDefaultSubobject<UMGActionComponent>("ActionComp");
 	InteractionComp = CreateDefaultSubobject<UMGInteractionComponent>("InteractionComp");
 	InteractionComp->SetAutoActivate(true);
+	AttributeComp = CreateDefaultSubobject<UMGAttributeComponent>("AttributeComp");
 	
 	GetCharacterMovement()->bOrientRotationToMovement = true;
 	GetCharacterMovement()->RotationRate = FRotator(0, 720, 0);
@@ -42,6 +45,21 @@ AMGCharacter::AMGCharacter()
 	GetCharacterMovement()->GravityScale = 1.2;
 	GetCharacterMovement()->JumpZVelocity = 600;
 	GetCharacterMovement()->AirControl = 1.0;
+}
+
+
+void AMGCharacter::BeginPlay()
+{
+	Super::BeginPlay();
+
+	if (IsLocallyControlled() && PlayerWidgetClass)
+	{
+		PlayerWidget = CreateWidget<UMGPlayerWidget>(GetWorld(), PlayerWidgetClass);
+		if (PlayerWidget)
+		{
+			PlayerWidget->AddToViewport();
+		}
+	}
 }
 
 void AMGCharacter::StartJump()
@@ -77,4 +95,9 @@ void AMGCharacter::StopSprint()
 void AMGCharacter::Interact()
 {
 	InteractionComp->OnInteract();
+}
+
+UMGAttributeComponent* AMGCharacter::GetAttributeComponent() const
+{
+	return AttributeComp;
 }

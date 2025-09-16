@@ -6,6 +6,8 @@
 #include "MGCharacterBase.h"
 #include "MGCharacter.generated.h"
 
+class UMGPlayerWidget;
+class UMGAttributeComponent;
 class UMGInteractionComponent;
 class UMGActionComponent;
 class AMGProjectileBase;
@@ -33,7 +35,12 @@ public:
 	void StopSprint();
 
 	void Interact();
-	
+
+	UFUNCTION(BlueprintCallable)
+	UMGAttributeComponent* GetAttributeComponent() const;
+
+protected:
+	virtual void BeginPlay() override;
 protected:
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Component")
 	TObjectPtr<USpringArmComponent> SpringArmComp;
@@ -46,4 +53,16 @@ protected:
 
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Component")
 	TObjectPtr<UMGInteractionComponent> InteractionComp;
+
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Component")
+	TObjectPtr<UMGAttributeComponent> AttributeComp;
+
+	// UI Begin
+private:
+	UPROPERTY(EditDefaultsOnly, Category = "Components")
+	TSubclassOf<UMGPlayerWidget> PlayerWidgetClass;
+
+	UPROPERTY()
+	TObjectPtr<UMGPlayerWidget> PlayerWidget;
+	// UI End
 };

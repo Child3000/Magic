@@ -46,4 +46,8 @@ private:
 		UPrimitiveComponent* OtherComp,
 		FVector NormalImpulse,
 		const FHitResult& Hit);
+
+private:
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category="Damages", meta = (AllowPrivateAccess="true", ClampMin="0"))
+	float DamageAmount;
 };

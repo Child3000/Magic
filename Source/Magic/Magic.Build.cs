@@ -14,6 +14,7 @@ public class Magic : ModuleRules
 			"Niagara",
 			"DeveloperSettings",
 			"GameplayTags",
+			"UMG",
 		});
 
 		PrivateDependencyModuleNames.AddRange(new string[] {  });
